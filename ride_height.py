@@ -68,7 +68,7 @@ def writesettings(corner, gains, offsets):
 
         _write_settings_file(CALIBRATION_FILE)
 
-    if offset is not None:
+    if offsets is not None:
         if   corner == "LF":
             offsets = offsets[0:8]
         elif corner == "LR":
@@ -80,9 +80,9 @@ def writesettings(corner, gains, offsets):
 
         if offsets[0] != '':
             ADC1_OFFSET = getadcreading(adc_address1)*ADC1_GAIN * -1.0
-        if offsets[0] != '':
+        if offsets[1] != '':
             ADC2_OFFSET = getadcreading(adc_address2)*ADC2_GAIN * -1.0
-        if offsets[0] != '':
+        if offsets[2] != '':
             ADC3_OFFSET = getadcreading(adc_address3)*ADC3_GAIN * -1.0
 
         _write_settings_file(CALIBRATION_FILE)
