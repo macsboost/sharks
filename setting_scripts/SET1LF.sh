@@ -91,6 +91,7 @@ echo Start Scale Server
 echo Set Scale LCD
 echo /usr/bin/python2 $CLIENTFILE           $IPADDR 2\> /var/log/sharks-lcd.log    \& >>  $STARTSCRIPT
 echo /usr/bin/python3 $SERVERFILE $POSITION $IPADDR 2\> /var/log/sharks-server.log \& >>  $STARTSCRIPT
+echo /usr/sbin/hostapd /etc/hostapd/hostapd.conf                                   \& >>  $STARTSCRIPT
 cp $STARTSCRIPT /etc/rc.local
 
 echo Reboot
