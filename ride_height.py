@@ -21,6 +21,14 @@ varDivisior = 16 # from pdf sheet on adc addresses and config
 varMultiplier = (2.4705882/varDivisior)/1000
 
 def _write_settings_file(filename):
+    global ADC1_GAIN
+    global ADC2_GAIN
+    global ADC3_GAIN
+    global ADC1_OFFSET
+    global ADC2_OFFSET
+    global ADC3_OFFSET
+    
+    print(ADC1_GAIN,ADC2_GAIN,ADC3_GAIN,ADC1_OFFSET,ADC2_OFFSET,ADC3_OFFSET)
     with open(filename, "w") as f:
         f.write("%f, %f\n" % (ADC1_GAIN, ADC1_OFFSET))
         f.write("%f, %f\n" % (ADC2_GAIN, ADC2_OFFSET))
@@ -58,10 +66,27 @@ def writesettings(corner, gains, offsets):
         except:
             pass
 
-        print(ADC1_GAIN,ADC2_GAIN,ADC3_GAIN)
         _write_settings_file(CALIBRATION_FILE)
-        
 
+    if offset is not None:
+        if   corner == "LF":
+            offsets = offsets[0:8]
+        elif corner == "LR":
+            offsets = offsets[8:16]
+        elif corner == "RF":
+            offsets = offsets[16:24]
+        elif corner == "RR":
+            offsets = offsets[24:32]
+
+        if offsets[0] != '':
+            ADC1_OFFSET = getadcreading(adc_address1)*ADC1_GAIN * -1.0
+        if offsets[0] != '':
+            ADC2_OFFSET = getadcreading(adc_address2)*ADC2_GAIN * -1.0
+        if offsets[0] != '':
+            ADC3_OFFSET = getadcreading(adc_address3)*ADC3_GAIN * -1.0
+
+        _write_settings_file(CALIBRATION_FILE)
+            
 def reloadsettings():
     global ADC1_GAIN
     global ADC2_GAIN
@@ -84,13 +109,11 @@ def reloadsettings():
             ADC1_OFFSET = float(data1[1])
             ADC2_OFFSET = float(data2[1])
             ADC3_OFFSET = float(data3[1])
-            print(ADC1_GAIN, ADC2_GAIN, ADC3_GAIN, ADC1_OFFSET,ADC2_OFFSET,ADC3_OFFSET)
     except:
         print("Could not open calibration file")
         
-reloadsettings()
-#def changechannel(address, adcConfig):
-#    bus.transaction(i2c.writing_bytes(address, adcConfig))
+reloadsettings() # load settings on module start
+
 		
 def getadcreading(address):
     h, m, l ,s = bus.transaction(i2c.reading(address,4))[0]
