@@ -40,7 +40,7 @@ class recv_server:
                 vals = last_msg.split(',')
                 if len(vals) > 6:
                     try:
-                        res =(vals[4], float(vals[6]))
+                        res ="W:% 4d   H:%1.3f" % (int(vals[5]), float(vals[6])) 
                     except:
                         res = None
 
