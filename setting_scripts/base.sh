@@ -55,6 +55,7 @@ if [ "$POSITION" = "LF" ]
     echo AP;
     # turn AP on
     cp $HOSTAPDTMPFILE /etc/hostapd/hostapd.conf
+    echo /usr/sbin/hostapd /etc/hostapd/hostapd.conf \&                                      >> $STARTSCRIPT
     else
     echo STA ;
     # turn AP off
@@ -71,6 +72,7 @@ fi
 echo Set IP Address
 export NETCONFIGTMPFILE="/tmp/new.net.config"
 echo auto lo                                            >  $NETCONFIGTMPFILE
+echo auto eth0                                            >>  $NETCONFIGTMPFILE
 echo iface lo inet loopback                             >> $NETCONFIGTMPFILE
 echo iface eth0 inet dhcp                               >> $NETCONFIGTMPFILE
 echo allow-hotplug wlan0                                >> $NETCONFIGTMPFILE

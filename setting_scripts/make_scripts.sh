@@ -1,6 +1,6 @@
 #!/bin/env bash
 
-export NSETS=4
+export NSETS=9
 
 for setnum in `seq 1 $NSETS`;
 do
