@@ -13,6 +13,7 @@ do
 	cat base.sh                      >> $filename
 
 	chmod +x $filename
+	echo $filename
     done
 	
 
