@@ -11,6 +11,8 @@ do
 	echo "export SETNUM=$setnum"     >> $filename
 	echo "export POSITION=$corner"   >> $filename
 	cat base.sh                      >> $filename
+
+	chmod +x $filename
     done
 	
 
