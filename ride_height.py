@@ -8,10 +8,35 @@ adc_address1 = 0x68	#68=first i2c A/D chip
 adc_address2 = 0x69	#69=second i2c A/D chip
 adc_address3 = 0x6A	#board 2 first A/D chip
 
+CALIBRATION_FILE = "/etc/sharks.calibration"
+
+ADC1_GAIN = 1.0
+ADC2_GAIN = 1.0
+ADC3_GAIN = 1.0
+ADC1_OFFSET = 0.0
+ADC2_OFFSET = 0.0
+ADC3_OFFSET = 0.0
 
 varDivisior = 16 # from pdf sheet on adc addresses and config
 varMultiplier = (2.4705882/varDivisior)/1000
 
+def reloadsettings():
+    with open(CALIBRATION_FILE, "r") as f:
+        line1 = f.readline()
+        line2 = f.readline()
+        line3 = f.readline()
+        data1 = line1.split(",")
+        data2 = line2.split(",")
+        data3 = line3.split(",")
+        ADC1_GAIN = float(data1[0])
+        ADC2_GAIN = float(data2[0])
+        ADC3_GAIN = float(data3[0])
+        ADC1_OFFSET = float(data1[1])
+        ADC2_OFFSET = float(data2[1])
+        ADC3_OFFSET = float(data3[1])
+        print(ADC1_GAIN, ADC2_GAIN, ADC3_GAIN, ADC1_OFFSET,ADC2_OFFSET,ADC3_OFFSET)
+
+reloadsettings()
 #def changechannel(address, adcConfig):
 #    bus.transaction(i2c.writing_bytes(address, adcConfig))
 		
@@ -37,15 +62,18 @@ def setadc(addr,channel):	#incorporated channel change in setadc
 
 
 def weight():
-    return getadcreading(adc_address1)*505.07-341.5
+    return getadcreading(adc_address1)*ADC1_GAIN+ADC1_OFFSET
+    #return getadcreading(adc_address1)*505.07-341.5
 
 def height():
     #setadc(adc_address2,0)
-    return getadcreading(adc_address2)* 1.9476
+    return getadcreading(adc_address2)*ADC2_GAIN+ADC2_OFFSET
+    #return getadcreading(adc_address2)* 1.9476
 
 def shock():
     #setadc(adc_address3,0)	#change to channel 1, does not work yet as it needs a delay or check status bit
-    return getadcreading(adc_address3)
+    return getadcreading(adc_address3)*ADC3_GAIN+ADC3_OFFSET
+    #return getadcreading(adc_address3)
 
 
 try:
