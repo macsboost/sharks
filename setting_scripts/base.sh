@@ -72,7 +72,7 @@ fi
 echo Set IP Address
 export NETCONFIGTMPFILE="/tmp/new.net.config"
 echo auto lo                                            >  $NETCONFIGTMPFILE
-echo auto eth0                                            >>  $NETCONFIGTMPFILE
+#echo auto eth0                                          >>  $NETCONFIGTMPFILE # comment this enables LAN port
 echo iface lo inet loopback                             >> $NETCONFIGTMPFILE
 echo iface eth0 inet dhcp                               >> $NETCONFIGTMPFILE
 echo allow-hotplug wlan0                                >> $NETCONFIGTMPFILE
