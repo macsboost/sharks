@@ -95,7 +95,8 @@ if __name__ == "__main__":
     header = fd.read().strip()
 
     config_options = os.listdir(config_dir)
-
+    if config_options is not None:
+        config_options.sort()
     d = Display(header)
     d.set_startup()
 
