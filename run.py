@@ -8,6 +8,7 @@ from registration import reg_server
 UPDATE_FREQ = 20.0
 REG_TIME = 60.0 # seconds
 PORT = 55555
+CHANNEL_COUNT = 8
 
 VERBOSITY = 0
 
@@ -29,8 +30,9 @@ if __name__ == "__main__":
     
     while True:
         hosts = r.get_hosts()
-
-
+        gains, offset = r.get_calibration()
+        ride_height.writesettings(corner,gains, offset)
+                                                    
         for host in hosts:
             clients[host] = time.time()+ REG_TIME
             s = host + ":" + str(clients[host]) 
