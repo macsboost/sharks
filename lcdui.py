@@ -53,7 +53,7 @@ class Display:
         self.last_button_press = time.time()
         return result
 
-    def settings_menu(self, options = ['option1', 'option2', 'option3']):
+    def settings_menu(self, options = ['option1', 'option2', 'option3', 'option4', 'option5', 'option6', 'option7', 'option8']):
         done = False
         selected_option = 0
         while done == False and len(options) > 0:
