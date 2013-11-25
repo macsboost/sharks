@@ -42,7 +42,8 @@ if __name__ == "__main__":
         h = ride_height.height()
         for host in clients.keys():
             if now < clients[host]:
-                t.send([host], int(now*1000), 0, h)
+                shock = 0.123
+                t.send([host], int(now*1000), 0, h, shock)
                 if VERBOSITY > 1:
                     sys.stdout.write(".");sys.stdout.flush()
         time.sleep(1.0/UPDATE_FREQ)
