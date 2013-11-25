@@ -5,7 +5,7 @@ import quick2wire.i2c as i2c
 bus = i2c.I2CMaster()
 adc_address1 = 0x68	#68=first i2c A/D chip
 adc_address2 = 0x69	#69=second i2c A/D chip
-adc_address3 = 0x70	#board 2 first A/D chip
+adc_address3 = 0x6A	#board 2 first A/D chip
 
 
 varDivisior = 16 # from pdf sheet on adc addresses and config
@@ -37,17 +37,21 @@ def setadc(addr,channel):	#incorporated channel change in setadc
 start = 0.0
 setadc(adc_address1,0)
 setadc(adc_address2,0)
+setadc(adc_address3,0)
 
 def weight():
+    #time.sleep(.01)
     return getadcreading(adc_address1)*505.07-341.5
 
 def height():
-    setadc(adc_address2,0)
+    #setadc(adc_address2,0)
+    #time.sleep(.01)
     return getadcreading(adc_address2)* 1.9476
 
 def shock():
-    setadc(adc_address3,0)	#change to channel 1, does not work yet as it needs a delay or check status bit
-    return getadcreading(adc_address2)
+    #setadc(adc_address3,0)	#change to channel 1, does not work yet as it needs a delay or check status bit
+    #time.sleep(.01)
+    return getadcreading(adc_address3)
 
 if __name__ == "__main__":
     import sys,time
