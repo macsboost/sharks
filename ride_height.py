@@ -3,14 +3,14 @@
 import quick2wire.i2c as i2c
 
 bus = i2c.I2CMaster()
-adc_address1 = 0x68
-adc_address2 = 0x69
+adc_address1 = 0x68	#68=first i2c A/D chip
+adc_address2 = 0x69	#69=second i2c A/D chip
 
 varDivisior = 16 # from pdf sheet on adc addresses and config
 varMultiplier = (2.4705882/varDivisior)/1000
 
-def changechannel(address, adcConfig):
-    bus.transaction(i2c.writing_bytes(address, adcConfig))
+#def changechannel(address, adcConfig):
+#    bus.transaction(i2c.writing_bytes(address, adcConfig))
 		
 def getadcreading(address):
     h, m, l ,s = bus.transaction(i2c.reading(address,4))[0]
@@ -20,29 +20,39 @@ def getadcreading(address):
         t = ~(0x020000 - t)
     return t * varMultiplier
 
-def setadc(addr):
+def setadc(addr,channel):	#incorporated channel change in setadc
     mode = 1
     sr = 2   # 0:240, 1:60, 2:15, 3:3.75 
     gain = 0 # gain = 2^x
 		
     config_register = 0;
-    config_register |= 0    << 5
+    config_register |= channel    << 5	#channel bits
     config_register |= mode << 4
     config_register |= sr   << 2
-    config_register |= gain
+    config_register |= gain		
     bus.transaction(i2c.writing_bytes(addr, config_register))
 
 start = 0.0
-setadc(adc_address1)
-changechannel(adc_address2, 0x9C)
+setadc(adc_address1,0)
+setadc(adc_address2,0)
+
+def weight():
+    return getadcreading(adc_address1)
 
 def height():
-    return getadcreading(adc_address1)
+    setadc(adc_address2,0)
+    return getadcreading(adc_address2) 
+
+def shock():
+    setadc(adc_address2,0)	#change to channel 1, does not work yet as it needs a delay or check status bit
+    return getadcreading(adc_address2)
 
 if __name__ == "__main__":
     import sys,time
     while True:
-        s = "\r%.6f" % height()
-        sys.stdout.write(s)
+        h = "\rheight= %.6f " % height()
+        w = " weight= %.6f " % weight()
+        s = " shock= %.6f   " % shock()
+        sys.stdout.write(h+w+s)
         time.sleep(0.1)
 

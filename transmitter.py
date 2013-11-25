@@ -18,7 +18,7 @@ class Transmitter:
         
     def send(self, host_list, timestamp, weight, height): 
         msgstring = "%s,SHARKNET1,%d,%d,%s,%d,%.5f,1,2,3,4,5,6" %\
-                    (PROTOCOL_VERSION, timestamp % 1e5, self.seqnum, self.loc, weight, height*1.9746)
+                    (PROTOCOL_VERSION, timestamp % 1e5, self.seqnum, self.loc,(weight*505.07)-341.5, height*1.9476, shock)
         msg = bytes(msgstring,'UTF-8')
 
         if VERBOSITY > 1:            
