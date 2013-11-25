@@ -39,11 +39,14 @@ if __name__ == "__main__":
             
 
         now = time.time()
-        h = ride_height.height()
+        ht = ride_height.height()
+       # sh = ride_height.shock()
+       # wt = ride_height.weight()
+
         for host in clients.keys():
             if now < clients[host]:
                 shock = 0.123
-                t.send([host], int(now*1000), 0, h, shock)
+                t.send([host], int(now*1000), wt, ht, sh)
                 if VERBOSITY > 1:
                     sys.stdout.write(".");sys.stdout.flush()
         time.sleep(1.0/UPDATE_FREQ)
