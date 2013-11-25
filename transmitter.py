@@ -16,9 +16,9 @@ class Transmitter:
         self.port = port
         self.loc = location
         
-    def send(self, host_list, timestamp, weight, height): 
-        msgstring = "%s,SHARKNET1,%d,%d,%s,%d,%.5f,1,2,3,4,5,6" %\
-                    (PROTOCOL_VERSION, timestamp % 1e5, self.seqnum, self.loc,(weight*505.07)-341.5, height*1.9476, shock)
+    def send(self, host_list, timestamp, weight, height, shock): 
+        msgstring = "%s,SHARKNET1,%d,%d,%s,%d,%.5f,%.3f,2,3,4,5,6" %\
+                    (PROTOCOL_VERSION, timestamp % 1e5, self.seqnum, self.loc,weight, height, shock)
         msg = bytes(msgstring,'UTF-8')
 
         if VERBOSITY > 1:            
@@ -35,4 +35,4 @@ class Transmitter:
 if __name__ == "__main__":
     import time
     t = Transmitter()
-    t.send(['172.16.8.151', '127.0.0.1'], str(time.time()*1000), 0, 0.0)
+    t.send(['172.16.8.151', '127.0.0.1'], str(time.time()*1000), 0, 0.0, 0.0)
