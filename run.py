@@ -39,10 +39,21 @@ if __name__ == "__main__":
             
 
         now = time.time()
-        ht = ride_height.height()
-        sh = ride_height.shock()
-        wt = ride_height.weight()
+        try:
+            ht = ride_height.height()
+        except:
+            ht = -999
 
+        try:
+            sh = ride_height.shock()
+        except:
+            sh = -999
+
+        try:
+            wt = ride_height.weight()
+        except:
+            wt = -999
+            
         for host in clients.keys():
             if now < clients[host]:
                 shock = 0.123
