@@ -1,5 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
+import sys
 import quick2wire.i2c as i2c
 
 bus = i2c.I2CMaster()
@@ -34,31 +35,44 @@ def setadc(addr,channel):	#incorporated channel change in setadc
     config_register |= gain		
     bus.transaction(i2c.writing_bytes(addr, config_register))
 
-start = 0.0
-setadc(adc_address1,0)
-setadc(adc_address2,0)
-setadc(adc_address3,0)
 
 def weight():
-    #time.sleep(.01)
     return getadcreading(adc_address1)*505.07-341.5
 
 def height():
     #setadc(adc_address2,0)
-    #time.sleep(.01)
     return getadcreading(adc_address2)* 1.9476
 
 def shock():
     #setadc(adc_address3,0)	#change to channel 1, does not work yet as it needs a delay or check status bit
-    #time.sleep(.01)
     return getadcreading(adc_address3)
+
+
+try:
+    setadc(adc_address1,0)
+    setadc(adc_address2,0)
+    setadc(adc_address3,0)
+except IOError:
+    sys.stderr.write("* Failed setting ADC addresses\n");
 
 if __name__ == "__main__":
     import sys,time
     while True:
-        h = "\rheight= %.6f " % height()
-        w = " weight= %.6f " % weight()
-        s = " shock= %.6f   " % shock()
+
+        try:
+            h = "\rheight= %.6f " % height()
+        except:
+            h = "error"
+            
+        try:
+            w = " weight= %.6f " % weight()
+        except:
+            w = "error"
+
+        try:
+            s = " shock= %.6f   " % shock()
+        except:
+            s = "error"
         sys.stdout.write(h+w+s)
         time.sleep(0.1)
 
