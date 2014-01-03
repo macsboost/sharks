@@ -10,6 +10,8 @@ import os,sys
 import adafruit.Adafruit_CharLCDPlate as af
 import client
 
+SETTINGS_REFRESH_TIME = 0.05
+
 VERBOSITY = 0
 class Display:
     def __init__(self, header = "MWRSCALE"):
@@ -74,7 +76,7 @@ class Display:
             elif self.lcd.DOWN in buttons:
                 selected_option -= 1
 
-            time.sleep(0.1)
+            time.sleep(SETTINGS_REFRESH_TIME)
 
         return options[selected_option % len(options)]
     
